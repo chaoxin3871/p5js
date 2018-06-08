@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>Pong</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.13/p5.js"></script>
+    <script>
+        var ballX; // x location of ball
+        var ballY; // y location of ball
+        var ballSpeedX = 0; // The speed of the ball horizontally
+        var ballSpeedY = 0; // The speed of the ball vertically
+        var paddleHeight = 30; // The height of the paddle
+        var score = 0; // The score in the start
+        var lives = 3
+
+        function setup() {
+            createCanvas(800, 600);
+            noCursor();
+            ballX = random(width);
+            ballY = random(height / 2);
+        }
+
+        function draw() {
+            background(200);
+            fill(0)
+            textSize(30)
+            text("SCORE:", 25, 50)
+            text(score, 145, 50)
+            textSize(30)
+            text("lives:", 675, 50)
+            text(lives, 750, 50)
+
+            moveBall();
+            checkCollide();
+            drawPaddle();
+            drawBall();
+        }
+
+        function moveBall() {
+            ballX = ballX + ballSpeedX; // The x location of the ball changes
+            ballY = ballY + ballSpeedY; // The y location of the ball changes
+
+            console.log("ballSpeedX: " + ballSpeedX +
+                ", ballSpeedY: " + ballSpeedY); // Checks the speed and location of the ball
+        }
+
+        function checkCollide() {
+            if (ballX < 0 || ballX > width) {
+                ballSpeedX = ballSpeedX * -1; // x location changes
+            }
+            if (ballY < 0) {
+                ballSpeedY = ballSpeedY * -1; // y location changes
+            }
+            if (ballY > height - paddleHeight) {
+                if (ballX > mouseX && ballX < mouseX + 200) {
+                    ballSpeedY = ballSpeedY * -1;
+                    ballSpeedY--;
+                    console.log(ballSpeedY);
+                    score += 1
+                }
+                else {
+                    if (lives > 0){
+                        lives = lives - 1
+                        ballY = 100
+                    }
+                        else{
+                    background(250, 0, 0);
+                    textSize(100)
+                    text("GAME OVER!", 75, height / 2);
+                    noLoop();
+                    fill(0)
+                    textSize(30)
+                    text("SCORE:", 25, 50)
+                    text(score, 145, 50)
+                    text("lives:", 675, 50)
+                    text(lives, 750, 50)
+                        }
+                }
+            }
+        }
+
+        function drawBall() {
+            noStroke();
+            fill(0);
+            ellipse(ballX, ballY, 20, 20);
+        }
+
+        function drawPaddle() {
+            strokeWeight(4);
+            fill(255);
+            rect(mouseX, height - paddleHeight - 4, 200, paddleHeight);
+        }
+
+        function mousePressed() {
+            if (ballSpeedX == 0) {
+                ballSpeedX = 5;
+                ballSpeedY = 5;
+
+
+            }
+        }
+    </script>
+</head>
+<body>
+<form><input TYPE="button" onClick="history.go(0)" value="Reset"></form>
+    <div id="code" class="container-fluid">
+        <script src="https://gist-it.appspot.com/github/chaoxin3871/p5js/blob/master/pong-remix.html?footer=0"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        $(window).bind("load", function() {
+            $('#code').before($('#defaultCanvas0').remove());
+        });
+    </script>
+</body>
+
+
+</html>
